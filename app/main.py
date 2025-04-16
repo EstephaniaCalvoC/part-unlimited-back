@@ -6,7 +6,7 @@ from fastapi import APIRouter, FastAPI
 from app.api.part_routes import router as parts_router
 from app.logging_config import setup_logging
 
-load_dotenv()
+load_dotenv(override=True)
 
 setup_logging()
 
