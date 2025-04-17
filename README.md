@@ -41,6 +41,7 @@ The database will be created in the root directory of the project with three par
 
 1. Open http://localhost:8000/docs
 2. Try get all parts GET /api/parts
+3. Try get part by sku GET /api/parts/{sku}
 
 
 **4.Clean environment**

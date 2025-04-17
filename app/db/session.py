@@ -13,6 +13,10 @@ class DBClient:
     def get_by_id(self, table, id):
         return self.db.query(table).filter(table.id == id).first()
 
+    def get_by_unique_field(self, table, field, value):
+        field = getattr(table, field)
+        return self.db.query(table).filter(field == value).first()
+
     def create(self, obj):
         self.db.add(obj)
         self.db.commit()

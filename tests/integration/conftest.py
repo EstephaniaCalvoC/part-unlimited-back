@@ -4,8 +4,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.db.models.part import Part as Base
 from tests.common import DATABASE_FILE, DATABASE_URL
+from tests.integration.helpers import Base
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -15,7 +15,7 @@ def environment_variables():
     del os.environ["DATABASE_URL"]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def db_session():
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
     Base.metadata.create_all(bind=engine)
