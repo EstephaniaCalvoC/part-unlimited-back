@@ -3,13 +3,16 @@
 from pydantic import BaseModel
 
 
-class Part(BaseModel):
-    id: int
+class PartBase(BaseModel):
     name: str
     sku: str
     description: str
     weight_ounces: int
-    is_active: bool
+    is_active: bool = True
+
+
+class Part(PartBase):
+    id: int
 
     class Config:
         from_attributes = True

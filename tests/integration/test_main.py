@@ -51,3 +51,9 @@ def test_get_part(db_with_parts):
 def test_get_part_not_found(db_session):
     response = client.get(f"/api/parts/{PART_1['sku']}")
     assert response.status_code == 404
+
+
+def test_delete_part(db_with_parts):
+    response = client.delete(f"/api/parts/{PART_1['id']}")
+    assert response.status_code == 204
+    assert db_with_parts.query(PartModel).filter_by(id=PART_1["id"]).first() is None
