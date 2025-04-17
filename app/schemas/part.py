@@ -16,3 +16,7 @@ class Part(PartBase):
 
     class Config:
         from_attributes = True
+
+
+class PartCreate(PartBase):
+    pass

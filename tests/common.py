@@ -20,8 +20,7 @@ PART_2 = {
     "is_active": False,
 }
 
-PART_3 = {
-    "id": 3,
+NEW_PART = {
     "name": "Macrochip",
     "sku": "OWDD823011DJSD",
     "description": "Used for heavy-load computing",

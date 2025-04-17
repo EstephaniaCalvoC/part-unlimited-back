@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from tests.common import PART_1, PART_2
+from tests.common import NEW_PART, PART_1, PART_2
 from tests.integration.helpers import PartModel
 
 client = TestClient(app)
@@ -57,3 +57,26 @@ def test_delete_part(db_with_parts):
     response = client.delete(f"/api/parts/{PART_1['id']}")
     assert response.status_code == 204
     assert db_with_parts.query(PartModel).filter_by(id=PART_1["id"]).first() is None
+
+
+def test_create_part(db_with_parts):
+
+    response = client.post("/api/parts", json=NEW_PART)
+    part = response.json()
+
+    assert response.status_code == 201
+    assert part.pop("id") == 3
+    assert part == NEW_PART
+
+
+def test_create_part_invalid(db_session):
+    response = client.post(
+        "/api/parts",
+        json={"name": "Macrochip", "sku": "OWDD823011DJSD", "description": "weight_ounces and is_active are missing"},
+    )
+    assert response.status_code == 422
+
+
+def test_create_part_sku_already_exists(db_with_parts):
+    response = client.post("/api/parts", json=PART_1)
+    assert response.status_code == 422

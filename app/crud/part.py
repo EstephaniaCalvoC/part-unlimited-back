@@ -4,6 +4,7 @@ import logging
 
 from app.db.models.part import Part
 from app.db.session import DBClient
+from app.schemas.part import PartCreate
 
 logger = logging.getLogger(__name__)
 
@@ -47,4 +48,13 @@ def delete_part(db: DBClient, part_id: int):
         return db.delete(part)
     except Exception as e:
         logger.error(f"Error deleting part with id {part_id}: {e}")
+        raise
+
+
+def create_part(db: DBClient, part: PartCreate):
+    logger.info(f"Creating part: {part}")
+    try:
+        return db.create(Part(**part.model_dump()))
+    except Exception as e:
+        logger.error(f"Error creating part: {e}")
         raise

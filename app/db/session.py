@@ -1,5 +1,8 @@
 """DB session for database operations"""
 
+from sqlalchemy.exc import IntegrityError as SQLAlchemyIntegrityError
+
+from app.db.custom_exceptions import IntegrityError
 from app.db.sqlalchemy_adapter import get_session
 
 
@@ -18,10 +21,13 @@ class DBClient:
         return self.db.query(table).filter(field == value).first()
 
     def create(self, obj):
-        self.db.add(obj)
-        self.db.commit()
-        self.db.refresh(obj)
-        return obj
+        try:
+            self.db.add(obj)
+            self.db.commit()
+            self.db.refresh(obj)
+            return obj
+        except SQLAlchemyIntegrityError as e:
+            raise IntegrityError(str(e))
 
     def update(self, obj):
         self.db.commit()

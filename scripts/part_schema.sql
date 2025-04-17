@@ -2,7 +2,7 @@
 CREATE TABLE part (
     id INTEGER PRIMARY KEY,
     name VARCHAR(150),
-    sku VARCHAR(30),
+    sku VARCHAR(30) NOT NULL UNIQUE,
     description VARCHAR(1024),
     weight_ounces INTEGER,
     is_active TINYINT(1)

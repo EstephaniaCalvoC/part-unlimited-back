@@ -1,6 +1,6 @@
-from app.crud.part import delete_part, get_all_parts, get_part_by_id, get_part_by_sku
-from app.schemas.part import Part
-from tests.common import PART_1, PART_2
+from app.crud.part import create_part, delete_part, get_all_parts, get_part_by_id, get_part_by_sku
+from app.schemas.part import Part, PartCreate
+from tests.common import NEW_PART, PART_1, PART_2
 
 
 def test_get_all_parts(db_client_mock, populate_parts):
@@ -41,3 +41,9 @@ def test_get_part_by_id_not_found(db_client_mock):
 
 def test_delete_part(db_client_mock, populate_parts):
     assert delete_part(db_client_mock, PART_1["id"])
+
+
+def test_create_part(db_client_mock):
+    new_part = create_part(db_client_mock, PartCreate(**NEW_PART))
+    assert new_part is not None
+    assert 1 == len(get_all_parts(db_client_mock))
