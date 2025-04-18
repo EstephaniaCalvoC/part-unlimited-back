@@ -13,3 +13,9 @@ class PartModel(Base):
     description = Column(String(1024), nullable=True)
     weight_ounces = Column(Integer, nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
+
+
+class WordFrequencyModel(Base):
+    __tablename__ = "word_frequency"
+    id = Column(String, primary_key=True, nullable=False)
+    count = Column(Integer, nullable=False)

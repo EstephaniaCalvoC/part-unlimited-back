@@ -3,7 +3,7 @@
 from sqlalchemy.exc import IntegrityError as SQLAlchemyIntegrityError
 
 from app.db.custom_exceptions import IntegrityError
-from app.db.sqlalchemy_adapter import get_session
+from app.db.sqlalchemy_adapter import get_session, init_db
 
 
 class DBClient:
@@ -45,6 +45,7 @@ class DBClient:
 
 
 def get_db():
+    init_db()
     db = get_session()
     try:
         db_client = DBClient(db)

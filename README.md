@@ -22,8 +22,9 @@ LOG_LEVEL=DEBUG
 ```
 
 **2.Run app**
+
 ```bash
-# This will init db and run the FastAPI app with Uvicorn.
+# This will init db run migrations and run the FastAPI app with Uvicorn.
 # Maybe you'll need to run sudo apt-get install sqlite3 first.
 make run
 ```

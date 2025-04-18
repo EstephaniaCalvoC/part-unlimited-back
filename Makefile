@@ -13,10 +13,15 @@ run:  ## Init db and run the FastAPI app with Uvicorn
 	# Init db
 	. scripts/init_db.sh
 
+	# Init virtual environment
 	python -m venv .dev_venv 
 	. .dev_venv/bin/activate
-	
 	pip install -r dev_requirements.txt
+
+	# Run migrations
+	python -m app.db.migrations.part_description_words_frequency
+
+	# Run app
 	uvicorn app.main:app --reload
 
 

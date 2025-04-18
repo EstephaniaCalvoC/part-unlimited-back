@@ -4,6 +4,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from app.db.session import DBClient
 from tests.common import DATABASE_FILE, DATABASE_URL
 from tests.integration.helpers import Base
 
@@ -29,3 +30,8 @@ def db_session():
 
     if os.path.exists(DATABASE_FILE):
         os.remove(DATABASE_FILE)
+
+
+@pytest.fixture(scope="session")
+def db_client_mock(db_session):
+    yield DBClient(db_session)
