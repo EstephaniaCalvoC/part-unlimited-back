@@ -4,7 +4,7 @@ import logging
 
 from app.db.models.part import Part
 from app.db.session import DBClient
-from app.schemas.part import PartCreate
+from app.schemas.part import PartCreate, PartUpdate
 
 logger = logging.getLogger(__name__)
 
@@ -57,4 +57,17 @@ def create_part(db: DBClient, part: PartCreate):
         return db.create(Part(**part.model_dump()))
     except Exception as e:
         logger.error(f"Error creating part: {e}")
+        raise
+
+
+def update_part(db: DBClient, part_id: int, new_data: PartUpdate):
+    logger.info(f"Updating part with id: {part_id}")
+
+    part = get_part_by_id(db, part_id)
+    if part is None:
+        return None
+    try:
+        return db.update(part, new_data)
+    except Exception as e:
+        logger.error(f"Error updating part with id {part_id}: {e}")
         raise

@@ -44,6 +44,7 @@ The database will be created in the root directory of the project with three par
 3. Try get part by sku GET /api/parts/{sku}
 4. Try delete part by id DELETE /api/parts/{id}
 5. Try create part POST /api/parts
+6. Try update part by id PUT /api/parts/{id}
 
 
 **4.Clean environment**

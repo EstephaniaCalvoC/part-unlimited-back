@@ -80,3 +80,21 @@ def test_create_part_invalid(db_session):
 def test_create_part_sku_already_exists(db_with_parts):
     response = client.post("/api/parts", json=PART_1)
     assert response.status_code == 422
+
+
+def test_update_part(db_with_parts):
+    response = client.put(f"/api/parts/{PART_1['id']}", json={"weight_ounces": 55, "description": None})
+    updated_part = response.json()
+    assert response.status_code == 200
+    assert updated_part.pop("weight_ounces") == 55
+    assert updated_part.pop("description") is None
+
+
+def test_update_part_not_found(db_session):
+    response = client.put(f"/api/parts/{1}", json={"weight_ounces": 55})
+    assert response.status_code == 404
+
+
+def test_update_part_invalid(db_with_parts):
+    response = client.put(f"/api/parts/{PART_1['id']}", json={"name": None})
+    assert response.status_code == 422

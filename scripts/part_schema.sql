@@ -1,11 +1,11 @@
 -- part_schema.sql
 CREATE TABLE part (
     id INTEGER PRIMARY KEY,
-    name VARCHAR(150),
+    name VARCHAR(150) NOT NULL,
     sku VARCHAR(30) NOT NULL UNIQUE,
     description VARCHAR(1024),
-    weight_ounces INTEGER,
-    is_active TINYINT(1)
+    weight_ounces INTEGER NOT NULL,
+    is_active TINYINT(1) NOT NULL
 );
 
 INSERT INTO part (name, sku, description, weight_ounces, is_active)
