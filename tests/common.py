@@ -20,6 +20,20 @@ PART_2 = {
     "is_active": False,
 }
 
+PARTS_WORDS = [
+    {"id": "tightly", "count": 1},
+    {"id": "wound", "count": 1},
+    {"id": "nickel", "count": 1},
+    {"id": "gravy", "count": 1},
+    {"id": "alloy", "count": 1},
+    {"id": "spring", "count": 1},
+    {"id": "attached", "count": 1},
+    {"id": "to", "count": 1},
+    {"id": "provide", "count": 1},
+    {"id": "inverse", "count": 1},
+    {"id": "leverage", "count": 1},
+]
+
 NEW_PART = {
     "name": "Macrochip",
     "sku": "OWDD823011DJSD",

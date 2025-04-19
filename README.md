@@ -14,6 +14,7 @@ used by other teams to manage various aspects of them through the existing endpo
 ## Set up:
 
 **1. Set environment variables**
+
 ```bash
 #In .env
 
@@ -41,14 +42,16 @@ The database will be created in the root directory of the project with three par
 **3. Try API**
 
 1. Open http://localhost:8000/docs
-2. Try get all parts GET /api/parts
-3. Try get part by sku GET /api/parts/{sku}
-4. Try delete part by id DELETE /api/parts/{id}
-5. Try create part POST /api/parts
-6. Try update part by id PUT /api/parts/{id}
+2. Try to get all parts via `GET /api/parts`
+3. Try to get part by sku via `GET /api/parts/{sku}`
+4. Try to delete part by id via `DELETE /api/parts/{id}`
+5. Try to create part via `POST /api/parts`
+6. Try to update part by id via `PUT /api/parts/{id}`
+7. Try to get top common words in part description via `POST /api/analytics/part/get-top-common-words`
 
 
 **4.Clean environment**
+
 ```bash
 make clean
 ```

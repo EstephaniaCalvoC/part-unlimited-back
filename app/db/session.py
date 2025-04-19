@@ -20,28 +20,44 @@ class DBClient:
         field = getattr(table, field)
         return self.db.query(table).filter(field == value).first()
 
-    def create(self, obj):
+    def create(self, obj, save=True):
         try:
             self.db.add(obj)
-            self.db.commit()
-            self.db.refresh(obj)
+
+            if save:
+                self.save_changes()
+                self.db.refresh(obj)
+
             return obj
         except SQLAlchemyIntegrityError as e:
             raise IntegrityError(str(e))
 
-    def update(self, obj, new_data):
-        new_data_dict = new_data.model_dump(exclude_unset=True)
-        [setattr(obj, key, value) for key, value in new_data_dict.items()]
+    def update(self, obj, new_data, save=True):
+        [setattr(obj, key, value) for key, value in new_data.items()]
+
+        if save:
+            self.save_changes()
+
+        return obj
+
+    def delete(self, obj, save=True):
+        self.db.delete(obj)
+
+        if save:
+            self.save_changes()
+        return True
+
+    def save_changes(self):
         try:
             self.db.commit()
-            return obj
         except SQLAlchemyIntegrityError as e:
             raise IntegrityError(str(e))
 
-    def delete(self, obj):
-        self.db.delete(obj)
-        self.db.commit()
-        return True
+    def get_top_words(self, table, count_field, limit, skip):
+        count_field = getattr(table, count_field)
+        skip_words = skip if skip else [""]
+        query = self.db.query(table).filter(table.id.notin_(skip_words)).order_by(count_field.desc()).limit(limit)
+        return query.all()
 
 
 def get_db():

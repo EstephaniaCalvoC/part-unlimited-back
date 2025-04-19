@@ -12,6 +12,7 @@ def migrate_word_frequency(db: DBClient):
     parts = db.get_all(Part)
     for part in parts:
         add_words(db, part.description)
+        db.save_changes()
         logger.info(f"Added words from partion {part.id} description")
     logger.info("End word frequency migration")
 

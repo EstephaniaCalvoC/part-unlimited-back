@@ -2,6 +2,7 @@
 
 import logging
 
+from app.analytics.part import add_words, subtract_words
 from app.db.models.part import Part
 from app.db.session import DBClient
 from app.schemas.part import PartCreate, PartUpdate
@@ -45,7 +46,10 @@ def delete_part(db: DBClient, part_id: int):
     if part is None:
         return False
     try:
-        return db.delete(part)
+        subtract_words(db, part)
+        result = db.delete(part, save=False)
+        db.save_changes()
+        return result
     except Exception as e:
         logger.error(f"Error deleting part with id {part_id}: {e}")
         raise
@@ -54,7 +58,10 @@ def delete_part(db: DBClient, part_id: int):
 def create_part(db: DBClient, part: PartCreate):
     logger.info(f"Creating part: {part}")
     try:
-        return db.create(Part(**part.model_dump()))
+        part = db.create(Part(**part.model_dump()), save=False)
+        add_words(db, part.description)
+        db.save_changes()
+        return part
     except Exception as e:
         logger.error(f"Error creating part: {e}")
         raise
@@ -66,8 +73,23 @@ def update_part(db: DBClient, part_id: int, new_data: PartUpdate):
     part = get_part_by_id(db, part_id)
     if part is None:
         return None
+
     try:
-        return db.update(part, new_data)
+        new_data_dict = new_data.model_dump(exclude_unset=True)
+
+        description = new_data_dict.get("description", "")
+
+        if description is None:
+            subtract_words(db, part)
+
+        if description:
+            subtract_words(db, part)
+            add_words(db, description)
+
+        result = db.update(part, new_data_dict, save=False)
+        db.save_changes()
+        return result
+
     except Exception as e:
         logger.error(f"Error updating part with id {part_id}: {e}")
         raise

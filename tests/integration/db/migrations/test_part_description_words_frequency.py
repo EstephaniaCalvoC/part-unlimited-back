@@ -6,7 +6,7 @@ from tests.integration.helpers import PartModel, WordFrequencyModel
 
 
 @pytest.fixture(scope="function")
-def db_with_parts(db_session):
+def populate_parts(db_session):
     db_session.add_all([PartModel(**PART_1), PartModel(**PART_2), PartModel(**NEW_PART)])
     db_session.commit()
     yield db_session
@@ -14,7 +14,7 @@ def db_with_parts(db_session):
     db_session.commit()
 
 
-def test_migrate_word_frequency(db_client_mock, db_with_parts):
+def test_migrate_word_frequency(db_client_mock, populate_parts):
     migrate_word_frequency(db_client_mock)
 
     word_frequencies = db_client_mock.get_all(WordFrequencyModel)

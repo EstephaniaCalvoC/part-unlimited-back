@@ -1,7 +1,5 @@
 """API routes for parts"""
 
-import logging
-
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.crud.part import create_part as _create_part
@@ -15,7 +13,6 @@ from app.schemas.part import PartCreate as PartSchemaCreate
 from app.schemas.part import PartUpdate as PartSchemaUpdate
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
 
 
 @router.get("/", response_model=list[PartSchema])
