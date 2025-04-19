@@ -11,7 +11,7 @@ load_dotenv(override=True)
 
 setup_logging()
 
-app = FastAPI()
+app = FastAPI(title="Parts Unlimited API", description="API for Parts Unlimited parts", version="0.1.0")
 
 api_router = APIRouter()
 

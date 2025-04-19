@@ -15,13 +15,13 @@ from app.schemas.part import PartUpdate as PartSchemaUpdate
 router = APIRouter()
 
 
-@router.get("/", response_model=list[PartSchema])
+@router.get("/", response_model=list[PartSchema], summary="Get all parts", tags=["Parts"])
 def get_parts(db: DBClient = Depends(get_db)):
     parts = get_all_parts(db)
     return parts
 
 
-@router.get("/{sku}", response_model=PartSchema)
+@router.get("/{sku}", response_model=PartSchema, summary="Get part by sku", tags=["Parts"])
 def get_part(sku: str, db: DBClient = Depends(get_db)):
     part = get_part_by_sku(db, sku)
     if part is None:
@@ -29,14 +29,14 @@ def get_part(sku: str, db: DBClient = Depends(get_db)):
     return part
 
 
-@router.delete("/{_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Delete part by id", tags=["Parts"])
 def delete_part(_id: int, db: DBClient = Depends(get_db)):
     is_deleted = _delete_part(db, _id)
     if not is_deleted:
         raise HTTPException(status_code=404, detail="Part not found")
 
 
-@router.post("/", response_model=PartSchema, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PartSchema, status_code=status.HTTP_201_CREATED, summary="Create part", tags=["Parts"])
 def create_part(part: PartSchemaCreate, db: DBClient = Depends(get_db)):
     try:
         return _create_part(db, part)
@@ -44,7 +44,7 @@ def create_part(part: PartSchemaCreate, db: DBClient = Depends(get_db)):
         raise HTTPException(status_code=422, detail="IntegrityError: sku already exists")
 
 
-@router.put("/{_id}", response_model=PartSchema)
+@router.put("/{_id}", response_model=PartSchema, summary="Update part by id", tags=["Parts"])
 def update_part(_id: int, new_data: PartSchemaUpdate, db: DBClient = Depends(get_db)):
     try:
         updated_part = _update_part(db, _id, new_data)

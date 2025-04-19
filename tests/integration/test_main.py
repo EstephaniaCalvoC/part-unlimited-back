@@ -119,7 +119,7 @@ def test_update_part_invalid(db_with_parts):
 
 
 def test_get_all_words(db_with_parts):
-    response = client.post("/api/analytics/get-top-common-words", json={"limit": 100, "skip": []})
+    response = client.post("/api/analytics/parts/get-top-common-words", json={"limit": 100, "skip": []})
     word_frequencies = response.json()
 
     assert response.status_code == 200
@@ -128,7 +128,7 @@ def test_get_all_words(db_with_parts):
 
 
 def test_get_top_common_words_with_skip(db_with_parts):
-    response = client.post("/api/analytics/get-top-common-words", json={"limit": 100, "skip": ["to", "provide"]})
+    response = client.post("/api/analytics/parts/get-top-common-words", json={"limit": 100, "skip": ["to", "provide"]})
     word_frequencies = response.json()
 
     assert response.status_code == 200
@@ -136,7 +136,7 @@ def test_get_top_common_words_with_skip(db_with_parts):
 
 
 def test_get_top_five_common_words(db_with_parts):
-    response = client.post("/api/analytics/part/get-top-common-words", json={"limit": 5, "skip": []})
+    response = client.post("/api/analytics/parts/get-top-common-words", json={"limit": 5, "skip": []})
     word_frequencies = response.json()
 
     assert response.status_code == 200

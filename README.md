@@ -10,8 +10,15 @@ used by other teams to manage various aspects of them through the existing endpo
 - Python 3.12
 - SQLite
 
-
 ## Set up:
+
+This project has a [Makefile](Makefile) with some useful commands:
+
+- `make help`: Show help
+- `make run`: Create a virtual environment, setup dependencies, run migrations and run the FastAPI app with Uvicorn.
+- `make clean`: Clean the environment
+- `make run_test`: Create a virtual environment, setup dependencies, run unit and integration tests with coverage.
+
 
 **1. Set environment variables**
 
@@ -25,8 +32,6 @@ LOG_LEVEL=DEBUG
 **2.Run app**
 
 ```bash
-# This will init db run migrations and run the FastAPI app with Uvicorn.
-# Maybe you'll need to run sudo apt-get install sqlite3 first.
 make run
 ```
 
@@ -55,3 +60,25 @@ The database will be created in the root directory of the project with three par
 ```bash
 make clean
 ```
+
+## Developer Notes
+
+- To run unit and integration tests with coverage, use `make run_test`.
+
+
+- **Request and response examples** are available in the [OpenAPI documentation](http://localhost:8000/docs).
+
+
+- The approach to retrieving the **top common words in part descriptions** relies on a dedicated table that tracks word frequency for each part description. This table is automatically updated when a part is **created, deleted, or modified**, optimizing performance by avoiding real-time word counting for every API request.
+
+
+- The `get_top_common_words` endpoint supports **filtering out common words** (e.g., *"to", "and", "of"*) and defaults to returning the **top 5 most frequent words**.
+
+
+- For a **large number of parts**, implementing **pagination** in the `get_parts` endpoint is recommended to enhance performance and usability.
+
+### Assumptions
+
+- Each **SKU is unique** per part.  
+- All fields must **not be null**, except for the **description** field.  
+- The **Part table** has already been created and populated with data, requiring **migrations to be run** before use.
